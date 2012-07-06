@@ -1,7 +1,10 @@
 
 require('./')(process.stdin)
 
-process.stdin.setRawMode(true)
+if (process.stdin.setRawMode)
+  process.stdin.setRawMode(true)
+else
+  require('tty').setRawMode(true)
 
 process.stdin.on('keypress', function (c, key) {
   console.log(0, c, key)

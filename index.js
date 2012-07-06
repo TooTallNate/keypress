@@ -23,7 +23,7 @@ module.exports = keypress;
  */
 
 function keypress(stream) {
-  if (stream._emitKeypress) return;
+  if (isEmittingKeypress(stream)) return;
   stream._emitKeypress = true;
 
   function onData(b) {
@@ -48,6 +48,34 @@ function keypress(stream) {
   } else {
     stream.on('newListener', onNewListener);
   }
+}
+
+/**
+ * Returns `true` if the stream is already emitting "keypress" events.
+ * `false` otherwise.
+ */
+
+function isEmittingKeypress(stream) {
+  var rtn = stream._emitKeypress;
+  if (!rtn) {
+    // hack: check for the v0.6.x "data" event
+    stream.listeners('data').forEach(function (l) {
+      if (l.name == 'onData' && /emitKey/.test(l.toString())) {
+        rtn = true;
+        stream._emitKeypress = true;
+      }
+    });
+  }
+  if (!rtn) {
+    // hack: check for the v0.6.x "newListener" event
+    stream.listeners('newListener').forEach(function (l) {
+      if (l.name == 'onNewListener' && /keypress/.test(l.toString())) {
+        rtn = true;
+        stream._emitKeypress = true;
+      }
+    });
+  }
+  return rtn;
 }
 
 
