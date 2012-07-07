@@ -4,7 +4,8 @@ keypress
 
 
 Previous to Node `v0.8.x`, there was an undocumented `"keypress"` event that
-`process.stdin` would emit when it was a TTY.
+`process.stdin` would emit when it was a TTY. Some people discovered this hidden
+gem, and started using it in their own code.
 
 Now in Node `v0.8.x`, this `"keypress"` event does not get emitted by default,
 but rather only when it is being used in conjuction with the `readline` (or by
@@ -43,6 +44,7 @@ process.stdin.on('keypress', function (ch, key) {
   }
 });
 
+process.stdin.setRawMode(true);
 process.stdin.resume();
 ```
 
