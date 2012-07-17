@@ -8,7 +8,7 @@ else
 
 process.stdin.on('keypress', function (c, key) {
   console.log(0, c, key)
-  if (key.ctrl && key.name == 'c') {
+  if (key && key.ctrl && key.name == 'c') {
     process.stdin.pause()
   }
 })
