@@ -1,6 +1,6 @@
 {
   "name": "keypress",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Make any Node ReadableStream emit \"keypress\" events",
   "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
   "main": "index.js",
