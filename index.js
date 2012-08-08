@@ -15,8 +15,16 @@
  *   });
  *   proces.stdin.resume();
  */
+var exports = module.exports = keypress;
 
-module.exports = keypress;
+exports.enableMouse = function (stream) {
+  stream.write('\x1b' +'[?1000h')
+}
+
+exports.disableMouse = function (stream) {
+  stream.write('\x1b' +'[?1000l')
+}
+
 
 /**
  * accepts a readable Stream instance and makes it emit "keypress" events
@@ -297,6 +305,30 @@ function emitKey(stream, s) {
     return;
   }
 
+  if(key.code == '[M') {
+    key.name = 'mouse';
+    var s = key.sequence;
+    var b = s.charCodeAt(3);
+    key.x = s.charCodeAt(4) - 040;
+    key.y = s.charCodeAt(5) - 040;
+
+    key.scroll = 0;
+
+    key.ctrl  = !!(1<<4 & b);
+    key.meta  = !!(1<<3 & b);
+    key.shift = !!(1<<2 & b);
+
+    key.release = (3 & b) === 3;
+   
+    if(1<<6 & b) { //scroll
+      key.scroll = 1 & b ? 1 : -1;
+    }
+
+    if(!key.release && !key.scroll) {
+      key.button = b & 3;
+    }
+  }
+
   // Don't emit a key if no name was found
   if (key.name === undefined) {
     key = undefined;
@@ -306,7 +338,10 @@ function emitKey(stream, s) {
     ch = s;
   }
 
-  if (key || ch) {
+  if (key.name == 'mouse') {
+    stream.emit('mousepress', key)
+  }
+  else if (key || ch) {
     stream.emit('keypress', ch, key);
   }
 }

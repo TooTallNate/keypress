@@ -1,5 +1,6 @@
 
-require('./')(process.stdin)
+var keypress = require('./')
+keypress(process.stdin)
 
 if (process.stdin.setRawMode)
   process.stdin.setRawMode(true)
@@ -12,4 +13,16 @@ process.stdin.on('keypress', function (c, key) {
     process.stdin.pause()
   }
 })
+process.stdin.on('mousepress', function (mouse) {
+  console.log(mouse)
+})
+
+keypress.enableMouse(process.stdout)
+process.on('exit', function () {
+  //disable mouse on exit, so that the state is back to normal
+  //for the terminal.
+  keypress.disableMouse(process.stdout)
+})
+
 process.stdin.resume()
+
