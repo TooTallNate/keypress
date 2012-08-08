@@ -14,6 +14,7 @@ extension, the `repl`) module.
 This module is the exact logic from the node `v0.8.x` releases ripped out into its
 own module.
 
+__Bonus:__ Now with mouse support!
 
 Installation
 ------------
@@ -29,6 +30,8 @@ Or add it to the `"dependencies"` section of your _package.json_ file.
 
 Example
 -------
+
+#### Listening for "keypress" events
 
 ``` js
 var keypress = require('keypress');
@@ -46,6 +49,28 @@ process.stdin.on('keypress', function (ch, key) {
 
 process.stdin.setRawMode(true);
 process.stdin.resume();
+```
+
+#### Listening for "mousepress" events
+
+``` js
+var keypress = require('keypress');
+
+// make `process.stdin` begin emitting "mousepress" (and "keypress") events
+keypress(process.stdin);
+
+// you must enable the mouse events before they will begin firing
+keypress.enableMouse(process.stdout);
+
+process.stdin.on('mousepress', function (info) {
+  console.log('got "mousepress" event at %d x %d', info.x, info.y);
+});
+
+process.on('exit', function () {
+  // disable mouse on exit, so that the state
+  // is back to normal for the terminal
+  keypress.disableMouse(process.stdout);
+});
 ```
 
 
