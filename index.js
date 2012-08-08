@@ -22,7 +22,7 @@ exports.enableMouse = function (stream) {
 }
 
 exports.disableMouse = function (stream) {
-  stream.write('\x1b' +'[?1000l.')
+  stream.write('\x1b' +'[?1000l')
 }
 
 
