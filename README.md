@@ -14,6 +14,7 @@ extension, the `repl`) module.
 This module is the exact logic from the node `v0.8.x` releases ripped out into its
 own module.
 
+Now with mouse support!
 
 Installation
 ------------
@@ -47,6 +48,23 @@ process.stdin.on('keypress', function (ch, key) {
 process.stdin.setRawMode(true);
 process.stdin.resume();
 ```
+
+Mouse
+-----
+
+Mouse must be enabled.
+
+``` js
+keypress(process.stdin)
+keypress.enableMouse(process.stdout)
+process.on('exit', function () {
+  //disable mouse on exit, so that the state is back to normal
+  //for the terminal.
+  keypress.disableMouse(process.stdout)
+})
+```
+
+Now, `process.stdin` will also emit `'mousepress'` events!
 
 
 License
