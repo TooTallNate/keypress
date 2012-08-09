@@ -116,7 +116,7 @@ function isEmittingKeypress(stream) {
 */
 
 // Regexes used for ansi escape code splitting
-var metaKeyCodeRe = /^(?:\x1b)([a-zA-Z0-9])$/;
+var metaKeyCodeRe = /^(?:\x1b)(.)$/;
 var functionKeyCodeRe =
     /^(?:\x1b+)(O|N|\[|\[\[)(?:(\d+)(?:;(\d+))?([~^$])|(?:1;)?(\d+)?([a-zA-Z]))/;
 
@@ -169,14 +169,14 @@ function emitKey(stream, s) {
     key.name = String.fromCharCode(s.charCodeAt(0) + 'a'.charCodeAt(0) - 1);
     key.ctrl = true;
 
-  } else if (s.length === 1 && s >= 'a' && s <= 'z') {
-    // lowercase letter
-    key.name = s;
-
   } else if (s.length === 1 && s >= 'A' && s <= 'Z') {
     // shift+letter
     key.name = s.toLowerCase();
     key.shift = true;
+
+  } else if (s.length === 1 && s >= '!' && s <= '~') {
+    // symbol or lowercase letter
+    key.name = s;
 
   } else if (parts = metaKeyCodeRe.exec(s)) {
     // meta+character key
@@ -329,19 +329,22 @@ function emitKey(stream, s) {
     }
   }
 
-  // Don't emit a key if no name was found
-  if (key.name === undefined) {
-    key = undefined;
-  }
-
   if (s.length === 1) {
     ch = s;
   }
 
   if (key.name == 'mouse') {
-    stream.emit('mousepress', key)
+    return stream.emit('mousepress', key)
   }
-  else if (key || ch) {
+
+  // Don't emit a key if no name was found
+  // usually, this means that keypress isn't parsing it right.
+
+  //if (key.name === undefined) {
+  //  key = undefined;
+  //}
+  //else 
+  if (key || ch) {
     stream.emit('keypress', ch, key);
   }
 }
