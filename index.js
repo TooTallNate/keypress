@@ -1,5 +1,11 @@
 
 /**
+ * Module dependencies.
+ */
+
+var EventEmitter = require('events').EventEmitter;
+
+/**
  * Module exports.
  */
 
@@ -37,7 +43,7 @@ function keypress(stream) {
   stream._keypressDecoder = new StringDecoder('utf8');
 
   function onData(b) {
-    if (EventEmitter.listenerCount(stream, 'keypress') > 0) {
+    if (listenerCount(stream, 'keypress') > 0) {
       var r = stream._keypressDecoder.write(b);
       if (r) emitKey(stream, r);
     } else {
@@ -54,7 +60,7 @@ function keypress(stream) {
     }
   }
 
-  if (EventEmitter.listenerCount(stream, 'keypress') > 0) {
+  if (listenerCount(stream, 'keypress') > 0) {
     stream.on('data', onData);
   } else {
     stream.on('newListener', onNewListener);
@@ -124,8 +130,9 @@ exports.disableMouse = function (stream) {
  * @api public
  */
 
-if (!EventEmitter.listenerCount) {
-  EventEmitter.listenerCount = function(emitter, event) {
+var listenerCount = EventEmitter.listenerCount;
+if (listenerCount) {
+  listenerCount = function(emitter, event) {
     return emitter.listeners(event).length;
   };
 }
