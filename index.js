@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -131,7 +130,7 @@ exports.disableMouse = function (stream) {
  */
 
 var listenerCount = EventEmitter.listenerCount;
-if (listenerCount) {
+if (!listenerCount) {
   listenerCount = function(emitter, event) {
     return emitter.listeners(event).length;
   };
