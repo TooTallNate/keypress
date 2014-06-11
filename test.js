@@ -18,11 +18,5 @@ process.stdin.on('mousepress', function (mouse) {
 })
 
 keypress.enableMouse(process.stdout)
-process.on('exit', function () {
-  //disable mouse on exit, so that the state is back to normal
-  //for the terminal.
-  keypress.disableMouse(process.stdout)
-})
-
 process.stdin.resume()
 

@@ -37,7 +37,7 @@ Example
 var keypress = require('keypress');
 
 // make `process.stdin` begin emitting "keypress" events
-keypress(process.stdin);
+var state = keypress(process.stdin);
 
 // listen for the "keypress" event
 process.stdin.on('keypress', function (ch, key) {
@@ -49,6 +49,9 @@ process.stdin.on('keypress', function (ch, key) {
 
 process.stdin.setRawMode(true);
 process.stdin.resume();
+
+// remove the `keypress` event emitter
+state.fire();
 ```
 
 #### Listening for "mousepress" events
@@ -64,12 +67,6 @@ keypress.enableMouse(process.stdout);
 
 process.stdin.on('mousepress', function (info) {
   console.log('got "mousepress" event at %d x %d', info.x, info.y);
-});
-
-process.on('exit', function () {
-  // disable mouse on exit, so that the state
-  // is back to normal for the terminal
-  keypress.disableMouse(process.stdout);
 });
 ```
 

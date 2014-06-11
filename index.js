@@ -12,6 +12,12 @@ var EventEmitter = require('events').EventEmitter;
 var exports = module.exports = keypress;
 
 /**
+ * Enable Mouse
+ */
+
+var mouseEnabled = false;
+
+/**
  * This module offers the internal "keypress" functionality from node-core's
  * `readline` module, for your own programs and modules to use.
  *
@@ -65,6 +71,16 @@ function keypress(stream) {
   } else {
     stream.on('newListener', onNewListener);
   }
+
+  return {
+    fire: function() {
+      stream.removeListener('newListener', onNewListener);
+      stream.removeListener('data', onData);
+      if (mouseEnabled) {
+        disableMouse();
+      }
+    }
+  };
 }
 
 /**
@@ -104,8 +120,12 @@ function isEmittingKeypress(stream) {
  * @api public
  */
 
-exports.enableMouse = function (stream) {
+exports.enableMouse = function enableMouse(stream) {
+  mouseEnabled = true;
   stream.write('\x1b[?1000h');
+  process.once('exit', function() {
+    exports.disableMouse(stream);
+  });
 };
 
 /**
@@ -117,7 +137,8 @@ exports.enableMouse = function (stream) {
  * @api public
  */
 
-exports.disableMouse = function (stream) {
+exports.disableMouse = function disableMouse(stream) {
+  mouseEnabled = false;
   stream.write('\x1b[?1000l');
 };
 
