@@ -238,6 +238,9 @@ function emitKey(stream, s) {
     key.name = s.toLowerCase();
     key.shift = true;
 
+  } else if (!isNaN(parseInt(s, 10))) {
+    // is a number
+    key.name = s;
   } else if (parts = metaKeyCodeRe.exec(s)) {
     // meta+character key
     key.name = parts[1].toLowerCase();
