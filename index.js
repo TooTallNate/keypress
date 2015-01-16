@@ -9,7 +9,7 @@ var EventEmitter = require('events').EventEmitter;
  * Module exports.
  */
 
-var exports = module.exports = keypress;
+exports = module.exports = keypress;
 
 /**
  * This module offers the internal "keypress" functionality from node-core's
