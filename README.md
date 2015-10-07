@@ -8,7 +8,7 @@ Previous to Node `v0.8.x`, there was an undocumented `"keypress"` event that
 gem, and started using it in their own code.
 
 Now in Node `v0.8.x`, this `"keypress"` event does not get emitted by default,
-but rather only when it is being used in conjuction with the `readline` (or by
+but rather only when it is being used in conjunction with the `readline` (or by
 extension, the `repl`) module.
 
 This module is the exact logic from the node `v0.8.x` releases ripped out into its
