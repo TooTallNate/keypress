@@ -371,8 +371,8 @@ function emitKey(stream, s) {
     key.name = 'mouse';
     var s = key.sequence;
     var b = s.charCodeAt(3);
-    key.x = s.charCodeAt(4) - 040;
-    key.y = s.charCodeAt(5) - 040;
+    key.x = s.charCodeAt(4) - parseInt('040', 8);
+    key.y = s.charCodeAt(5) - parseInt('040', 8);
 
     key.scroll = 0;
 
