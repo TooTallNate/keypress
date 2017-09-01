@@ -29,7 +29,7 @@ exports = module.exports = keypress;
  *     process.stdin.pause();
  *   }
  * });
- * proces.stdin.resume();
+ * process.stdin.resume();
  * ```
  *
  * @param {Stream} stream
