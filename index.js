@@ -229,6 +229,10 @@ function emitKey(stream, s) {
     key.name = String.fromCharCode(s.charCodeAt(0) + 'a'.charCodeAt(0) - 1);
     key.ctrl = true;
 
+  } else if (s.length === 1 && s >= '0' && s <= '9') {
+    // Number
+    key.name = s;
+
   } else if (s.length === 1 && s >= 'a' && s <= 'z') {
     // lowercase letter
     key.name = s;
