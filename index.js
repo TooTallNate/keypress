@@ -238,6 +238,10 @@ function emitKey(stream, s) {
     key.name = s.toLowerCase();
     key.shift = true;
 
+  } else if (s.length === 1 && s >= '0' && s <= '9') {
+    // number
+    key.name = s;
+  
   } else if (parts = metaKeyCodeRe.exec(s)) {
     // meta+character key
     key.name = parts[1].toLowerCase();
