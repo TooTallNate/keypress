@@ -238,7 +238,19 @@ function emitKey(stream, s) {
     key.name = s.toLowerCase();
     key.shift = true;
 
-  } else if (parts = metaKeyCodeRe.exec(s)) {
+  }else if (!isNaN(parseInt(s, 10))) {
+    // is a number
+    key.name = s; 
+  } else if (s.length === 1 && (
+    (s >= '!' && s <= '@') ||
+    (s >= '[' && s < 'a') ||
+    (s >= '{' && s <= '~')
+    )) {
+    // meta+shift key setting ignored
+    key.name = s;
+    /new end/
+  }
+  else if (parts = metaKeyCodeRe.exec(s)) {
     // meta+character key
     key.name = parts[1].toLowerCase();
     key.meta = true;
