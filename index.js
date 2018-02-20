@@ -244,7 +244,8 @@ function emitKey(stream, s) {
   } else if (s.length === 1 && (
     (s >= '!' && s <= '@') ||
     (s >= '[' && s < 'a') ||
-    (s >= '{' && s <= '~')
+    (s >= '{' && s <= '~') ||
+    (s >= '£')
     )) {
     // meta+shift key setting ignored
     key.name = s;
